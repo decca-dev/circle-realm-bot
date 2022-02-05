@@ -21,8 +21,15 @@ export const messageCreate = (logger: Logger, client: TSClient) => {
 
     if (command.ownerOnly && message.author.id !== process.env.OWNER_ID) return;
 
-    if (command.permissions) {
-      if (!message.member?.permissions.has(command.permissions)) return;
+    if (command.permissions.length > 0) {
+      if (
+        !message.member?.permissions.toArray().includes(command.permissions[0]!)
+      ) {
+        message.reply(
+          "You cannot run that command because you are missing some permissions!"
+        );
+        return;
+      }
     }
 
     if (client.cooldowns.has(`${message.author.id}${command.name}`)) {
