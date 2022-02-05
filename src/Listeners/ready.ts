@@ -1,10 +1,11 @@
-import { TSClient } from "../Structures/Client.js";
-import { Logger } from "../Utils/Logger.js";
+import { Listener } from "../Structures/Listener.js";
 
-export const ready = (logger: Logger, client: TSClient) => {
-  client.on("ready", () => {
-    logger.info("LISTENERS - ready was loaded!");
-    logger.info(`Logged in as ${client.user?.username}`);
-    client.user?.setActivity({ type: "PLAYING", name: "in The Circle realm." });
-  });
-};
+export default new Listener({
+  name: "ready",
+  run: (logger, client) => {
+    client.on("ready", () => {
+      logger.info(`Logged in as ${client.user?.username}`);
+      client.user?.setActivity({ type: "PLAYING", name: "with Typescript" });
+    });
+  },
+});

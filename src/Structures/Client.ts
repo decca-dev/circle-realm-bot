@@ -5,6 +5,7 @@ import { Logger } from "../Utils/Logger.js";
 import { __dirname } from "../Utils/Constants.js";
 import { Command } from "./Command.js";
 import { dbConnect } from "../Utils/Database.js";
+import { Listener } from "./Listener.js";
 
 const logger = new Logger("client");
 
@@ -32,8 +33,22 @@ export class TSClient extends Client {
     });
   }
 
+  public loadListeners(): void {
+    const listenersPath = join(__dirname, "..", "Listeners");
+    readdirSync(listenersPath)
+      .filter((file) => file.endsWith(".js"))
+      .forEach(async (file) => {
+        const listener: Listener = await this.importFile(
+          `file://${listenersPath}/${file}`
+        );
+        logger.info(`LISTENERS - ${listener.name} was loaded!`);
+        listener.run(logger, this);
+      });
+  }
+
   public load(): void {
     this.loadCommands();
+    this.loadListeners();
     dbConnect();
   }
 }
