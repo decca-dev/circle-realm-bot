@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongo from "mongoose";
 
 interface PartyInterface {
   owner: string;
@@ -8,9 +8,9 @@ interface PartyInterface {
   createdAt: number;
 }
 
-export const Party = model<PartyInterface>(
+export const Party = mongo.model<PartyInterface>(
   "Party",
-  new Schema<PartyInterface>({
+  new mongo.Schema<PartyInterface>({
     owner: { type: String, required: true, unique: true },
     players: { type: [String], required: true, unique: true },
     thread_id: { type: String, required: true, unique: true },

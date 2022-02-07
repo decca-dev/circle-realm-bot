@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongo from "mongoose";
 
 interface UserInterface {
   name: string;
@@ -7,9 +7,9 @@ interface UserInterface {
   phone_number?: string;
 }
 
-export const User = model<UserInterface>(
+export const User = mongo.model<UserInterface>(
   "User",
-  new Schema<UserInterface>({
+  new mongo.Schema<UserInterface>({
     name: { type: String, required: true, unique: true },
     discord_id: { type: String, required: true, unique: true },
     phone_number: { type: String, unique: true },
