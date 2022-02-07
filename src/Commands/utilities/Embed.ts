@@ -72,7 +72,6 @@ export default new Command({
 
     if (timestamp === "true") embed.setTimestamp();
 
-    await message.delete();
     message.channel.send({ embeds: [embed] });
   },
 });
