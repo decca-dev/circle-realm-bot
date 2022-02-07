@@ -5,7 +5,10 @@ export default new Listener({
   run: (logger, client) => {
     client.on("ready", () => {
       logger.info(`Logged in as ${client.user?.username}`);
-      client.user?.setActivity({ type: "PLAYING", name: "with Typescript" });
+      client.user?.setActivity({
+        type: "PLAYING",
+        name: `with ${client.users.cache.size} gamers.`,
+      });
     });
   },
 });

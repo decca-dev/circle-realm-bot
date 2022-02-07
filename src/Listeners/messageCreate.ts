@@ -24,9 +24,10 @@ export default new Listener({
 
       if (command.permissions.length > 0) {
         if (
-          !message.member?.permissions
-            .toArray()
-            .includes(command.permissions[0]!)
+          !includesAll(
+            command.permissions,
+            message.member?.permissions.toArray()!
+          )
         ) {
           message.reply(
             "You cannot run that command because you are missing some permissions!"
@@ -65,3 +66,10 @@ export default new Listener({
     });
   },
 });
+
+const includesAll = (arr1: Array<any>, arr2: Array<any>): boolean => {
+  const result = arr1.every((el) => {
+    return arr2.indexOf(el) !== -1;
+  });
+  return result;
+};
