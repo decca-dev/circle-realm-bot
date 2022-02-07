@@ -92,7 +92,8 @@ export default new Command({
               },
               {
                 name: "Keys",
-                value: "`<>` means **required**\n`[]` means **optional**",
+                value:
+                  "`<>` means **required**\n`[]` means **optional**\n`|` means **or**",
               },
             ],
           },
