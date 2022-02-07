@@ -6,7 +6,7 @@ export interface CommandOptions {
   name: string;
   description: string;
   usage: string;
-  category: string;
+  category: Category;
   permissions: PermissionString[];
   cooldown: number;
   adminOnly: boolean;
@@ -18,3 +18,5 @@ export interface ListenerOptions {
   name: keyof ClientEvents;
   run: (logger: Logger, client: TSClient) => void;
 }
+
+export type Category = "auth" | "system" | "utilities";
