@@ -31,6 +31,15 @@ interface BotData {
   platform: string;
 }
 
+interface UserData {
+  tag: string;
+  id: string;
+  createdAt: number;
+  avatar: string;
+  joinedAt: number;
+  roles: Collection<string, Role>;
+}
+
 export default new Command({
   name: "info",
   description: "Returns general info about the server, users, bot, etc...",
@@ -175,6 +184,53 @@ export default new Command({
         });
         break;
       case "user":
+        const userArgs = args.join(" ").slice(1);
+        const member =
+          message.mentions.members?.first() ||
+          message.guild?.members.cache.get(userArgs[0]!) ||
+          message.guild?.members.cache.find((u) => u.user.id === userArgs[0]) ||
+          message.member;
+
+        const user: UserData = {
+          tag: member?.user.tag!,
+          id: member?.user.id!,
+          createdAt: member?.user.createdTimestamp!,
+          avatar: member?.user.avatarURL()!,
+          joinedAt: member?.joinedTimestamp!,
+          roles: member?.roles.cache.filter(
+            (role) => role.name !== "@everyone"
+          )!,
+        };
+
+        message.channel.send({
+          embeds: [
+            {
+              title: user.tag,
+              author: { name: user.tag, iconURL: user.avatar },
+              //@ts-ignore
+              thumbnail: user.avatar,
+              color: "RED",
+              fields: [
+                { name: "ID", value: user.id, inline: true },
+                { name: "Mention", value: `<@!${user.id}>`, inline: true },
+                {
+                  name: "Registered at",
+                  value: new Date(user.createdAt).toLocaleDateString("en-US"),
+                  inline: false,
+                },
+                {
+                  name: "Joined at",
+                  value: new Date(user.joinedAt).toLocaleDateString("en-US"),
+                  inline: false,
+                },
+                {
+                  name: "Roles",
+                  value: user.roles.map((role) => `<@&${role.id}>`).join(", "),
+                },
+              ],
+            },
+          ],
+        });
         break;
       default:
         message.reply(
