@@ -12,8 +12,9 @@ export default new Command({
   permissions: ["ADMINISTRATOR"],
   category: "auth",
   run: async (client, message, args) => {
-    const validArgs = ["approve", "deny"];
-    const method = args[0];
+    const validArgs = ["approve", "deny"] as const;
+    const method: typeof validArgs[number] =
+      args[0] as typeof validArgs[number];
 
     if (!args.length) {
       message.reply(
@@ -130,8 +131,13 @@ export default new Command({
             ],
           });
           await Msg.edit("User was DMed! Time to kick them out");
-          user?.kick(reason);
-          await Msg.edit("Homie is no more :thumbsup:");
+          user?.send(
+            `Hey, your verification request was **denied** for the following reason: \`${reason}\`\nYou will be kicked out automatically...`
+          );
+          setTimeout(async () => {
+            user?.kick(reason);
+            await Msg.edit("Homie is no more :thumbsup:");
+          }, 3000);
         } catch (error) {
           await Msg.edit("Couldn't DM user! Time to kick them out");
           user?.kick(reason);

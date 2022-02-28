@@ -19,4 +19,20 @@ export interface ListenerOptions {
   run: (logger: Logger, client: TSClient) => void;
 }
 
-export type Category = "auth" | "system" | "utilities";
+export type Category = "auth" | "system" | "utilities" | "party";
+
+export interface PartyOptions {
+  name: string;
+  party_id: string;
+  owner: string;
+  players: string[];
+  thread_id: string;
+  createdAt: number;
+}
+
+export interface UserOptions {
+  name: string;
+  discord_id: string;
+  minecraft_IGN: string;
+  phone_number?: string;
+}

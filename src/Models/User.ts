@@ -1,15 +1,9 @@
 import mongo from "mongoose";
+import { UserOptions } from "types";
 
-interface UserInterface {
-  name: string;
-  discord_id: string;
-  minecraft_IGN: string;
-  phone_number?: string;
-}
-
-export const User = mongo.model<UserInterface>(
+export const User = mongo.model<UserOptions>(
   "User",
-  new mongo.Schema<UserInterface>({
+  new mongo.Schema<UserOptions>({
     name: { type: String, required: true, unique: true },
     discord_id: { type: String, required: true, unique: true },
     phone_number: { type: String, unique: true },
